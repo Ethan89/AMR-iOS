@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-amr-ios是Opencore-amr的iOS版本
+amr-ios是Opencore-amr的iOS版本, 基于Opencore-amr 0.1.15
                    DESC
 
   s.homepage     = "https://github.com/Ethan89/AMR-iOS"
@@ -68,9 +68,8 @@ amr-ios是Opencore-amr的iOS版本
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "opencore-amr-ios/*"
-
-  # s.public_header_files = "Classes/**/*.h"
+  s.source_files  = 'opencore-amr-ios/*','opencore-amr-ios/include/**/*'
+  #s.public_header_files = "opencore-amr-ios/include/*"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -96,8 +95,7 @@ amr-ios是Opencore-amr的iOS版本
   # s.framework  = "SomeFramework"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
-  s.library   = ['opencore-amr-ios/lib/libopencore-amrnb.a',
-                 'opencore-amr-ios/libopencore-amrwb.a']
+  s.vendored_library = 'opencore-amr-ios/lib/libopencore-amrnb.a','opencore-amr-ios/libopencore-amrwb.a'
   # s.libraries = "iconv", "xml2"
 
 
@@ -107,7 +105,7 @@ amr-ios是Opencore-amr的iOS版本
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
 
-  # s.requires_arc = true
+  s.requires_arc = false
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
