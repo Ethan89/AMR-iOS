@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "amr-ios"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "amr-ios是Opencore-amr的iOS版本"
 
   # This description is used to generate tags and improve search results.
@@ -95,7 +95,7 @@ amr-ios是Opencore-amr的iOS版本, 基于Opencore-amr 0.1.15
   # s.framework  = "SomeFramework"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
-  s.vendored_library = 'opencore-amr-ios/lib/libopencore-amrnb.a','opencore-amr-ios/libopencore-amrwb.a'
+  s.vendored_libraries = 'opencore-amr-ios/lib/libopencore-amrnb.a','opencore-amr-ios/libopencore-amrwb.a'
   # s.libraries = "iconv", "xml2"
 
 
