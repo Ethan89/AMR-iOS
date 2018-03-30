@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include "interf_dec.h"
 #include "interf_enc.h"
+#include "dec_if.h"
+#include "if_rom.h"
 #import <Foundation/Foundation.h>
 
 #define AMR_MAGIC_NUMBER "#!AMR\n"

@@ -24,7 +24,7 @@ amr-ios是Opencore-amr的iOS版本, 基于Opencore-amr 0.1.15
 
   s.source_files  = 'opencore-amr-ios/*','opencore-amr-ios/include/**/*'
 
-  s.vendored_frameworks = ['opencore-amr-ios/lib/libopencore-amrnb.a',
+  s.vendored_libraries = ['opencore-amr-ios/lib/libopencore-amrnb.a',
                           'opencore-amr-ios/libopencore-amrwb.a']
 
   s.requires_arc = false
