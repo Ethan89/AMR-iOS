@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "amr-ios"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "amr-ios是Opencore-amr的iOS版本"
 
   s.description  = <<-DESC
