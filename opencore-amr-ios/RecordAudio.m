@@ -216,7 +216,7 @@
         if (self.powerFeedbackRate > 0) {
             feedbackRate = self.powerFeedbackRate;
         }
-        dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC, 0);
+        dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, feedbackRate * NSEC_PER_SEC, 0);
         WeakPtr *weakPtr = [[WeakPtr alloc] init];
         weakPtr.weakObj = self;
         dispatch_source_set_event_handler(timer, ^{
