@@ -34,6 +34,7 @@
 @property (nonatomic,assign)id<RecordAudioDelegate> delegate;
 @property (assign, nonatomic) float peakPower;
 @property (assign, nonatomic) float averagePower;
+@property (assign, nonatomic) float powerFeedbackRate;
 
 - (NSURL *) stopRecord ;
 - (void) startRecord;
