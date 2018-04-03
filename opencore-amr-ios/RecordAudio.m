@@ -11,6 +11,21 @@
 #import <AVFoundation/AVFoundation.h>
 #import "amrFileCodec.h"
 
+@implementation WeakPtr
+
+@synthesize weakObj = _weakObj;
+
+@end
+
+@interface RecordAudio ()
+
+/**
+ 录音音量计量表定时器
+ */
+@property (strong, nonatomic) dispatch_source_t meterTimer;
+
+@end
+
 @implementation RecordAudio
 
 
@@ -51,6 +66,7 @@
     [recorder stop];
     [recorder release];
     recorder =nil;
+    [self stopMeterTimer];
     return [url autorelease];
 }
 
@@ -185,8 +201,71 @@
     //Start the actual Recording
     [recorder record];
         NSLog(@"3");
+    [self startMeterTimer];
     //There is an optional method for doing the recording for a limited time see 
     //[recorder recordForDuration:(NSTimeInterval) 10]
 }
 
+- (void)startMeterTimer {
+    if (!self.meterTimer) {
+        dispatch_queue_t  queue = dispatch_get_global_queue(0, 0);
+        dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC, 0);
+        WeakPtr *weakPtr = [[WeakPtr alloc] init];
+        weakPtr.weakObj = self;
+        dispatch_source_set_event_handler(timer, ^{
+            if ([weakPtr.weakObj isKindOfClass:[RecordAudio class]]) {
+                RecordAudio *weakRecordAudio = (RecordAudio *)weakPtr.weakObj;
+                [weakRecordAudio updateMeter];
+            }
+        });
+        self.meterTimer = timer;
+    }
+    
+    dispatch_resume(self.meterTimer);
+}
+
+- (void)stopMeterTimer {
+    if (self.meterTimer) {
+        dispatch_source_cancel(self.meterTimer);
+    }
+}
+
+- (void)updateMeter {
+    
+    [recorder updateMeters];
+    self.averagePower   = [self calculatePower:[recorder averagePowerForChannel:0]];
+    self.peakPower      = [self calculatePower:[recorder peakPowerForChannel:0]];
+    NSLog(@"peakPower: %f, averagePower: %f", self.peakPower, self.averagePower);
+}
+
+- (float)calculatePower:(float)power {
+    
+    /**
+     The current peak power, in decibels, for the sound being recorded.
+     A return value of 0 dB indicates full scale, or maximum power;
+     a return value of -160 dB indicates minimum power (that is, near silence).
+     
+     If the signal provided to the audio recorder exceeds ±full scale,
+     then the return value may exceed 0 (that is, it may enter the positive range).
+     */
+    
+    float level; // The linear 0.0 .. 1.0 value we need.
+    float minDecibels = -80.0f; // Or use -60dB, which I measured in a silent room.
+    if (power < minDecibels) {
+        level = 0.0f;
+    } else if (power >= 0.0f) {
+        level = 1.0f;
+    } else {
+        float root = 2.0f;
+        float minAmp = powf(10.0f, 0.05f *minDecibels); // 最小分贝放大
+        float inverseAmpRange = 1.0f / (1.0f - minAmp);
+        float amp = powf(10.0f, 0.05f * power); // 当前分贝放大
+        float adjAmp = (amp - minAmp) *inverseAmpRange; // 最终使用的分贝数
+        
+        level = powf(adjAmp, 1.0f / root);
+    }
+    
+    return level;
+}
 @end

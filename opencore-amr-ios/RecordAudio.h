@@ -11,6 +11,12 @@
 #import <CoreAudio/CoreAudioTypes.h>
 #import "amrFileCodec.h"
 
+@interface WeakPtr : NSObject
+
+@property (assign, nonatomic) id weakObj;
+
+@end
+
 @protocol RecordAudioDelegate <NSObject>
 //0 播放 1 播放完成 2出错
 -(void)RecordStatus:(int)status;
@@ -26,6 +32,8 @@
 }
 
 @property (nonatomic,assign)id<RecordAudioDelegate> delegate;
+@property (assign, nonatomic) float peakPower;
+@property (assign, nonatomic) float averagePower;
 
 - (NSURL *) stopRecord ;
 - (void) startRecord;
