@@ -63,6 +63,7 @@
 - (NSURL *) stopRecord {
     NSURL *url = 
     [[NSURL alloc]initWithString:recorder.url.absoluteString];
+    recorder.meteringEnabled = NO;
     [recorder stop];
     [recorder release];
     recorder =nil;
@@ -189,6 +190,7 @@
     
     //Setup the recorder to use this file and record to it.
     recorder = [[ AVAudioRecorder alloc] initWithURL:recordedTmpFile settings:recordSetting error:&error];
+    recorder.meteringEnabled = YES;
     NSLog(@"1");
     //Use the recorder to start the recording.
     //Im not sure why we set the delegate to self yet.  
