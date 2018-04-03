@@ -230,6 +230,7 @@
 - (void)stopMeterTimer {
     if (self.meterTimer) {
         dispatch_source_cancel(self.meterTimer);
+        self.meterTimer = nil;
     }
 }
 
